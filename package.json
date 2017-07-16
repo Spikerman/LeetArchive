@@ -14,6 +14,7 @@
     "babel-preset-es2015": "^6.3.13",
     "babel-preset-react": "^6.3.13",
     "babelify": "^7.2.0",
+    "cheerio": "^1.0.0-rc.2",
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
     "watchify": "^3.7.0",

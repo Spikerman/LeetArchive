@@ -3,20 +3,34 @@
  */
 
 import React from 'react';
-import {Input, Button, Row, Col} from 'antd';
+import {Input, Button, Row, Col, Card} from 'antd';
 import Axios from 'axios';
+import {cheerio} from 'cheerio';
 
 class Search extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {value: ""};
+        this.state = {
+            value: "",
+            difficulty: "",
+            topics: [],
+            questions: []
+
+        };
         this.handleClick = this.handleClick.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.parseHtml = this.handleChange.bind(this);
     }
 
     handleChange(e) {
         this.setState({value: e.target.value});
 
+    }
+
+    parseHtml(html) {
+        const $ = cheerio.load(html);
+        let diff = $('ul .side-bar-list li:first').text();
+        this.setState({difficulty: diff});
     }
 
     handleClick() {
@@ -30,7 +44,8 @@ class Search extends React.Component {
         question = question.slice(0, -1);
         Axios.get(`https://leetcode.com/problems/${question}/#/description`)
             .then(function (response) {
-                console.log(response.data);
+                //console.log(response.data);
+                this.parseHtml(response.data);
             })
             .catch(function (error) {
                 console.log(error);
@@ -50,6 +65,17 @@ class Search extends React.Component {
                     </Col>
                     <Col span={6}>
                         <Button type="primary" icon="search" onClick={this.handleClick}> Search </Button>
+                    </Col>
+                </Row>
+                <Row gutter={16}>
+                    <Col span={8}>
+                        <Card title="Difficulty" bordered={true}>{this.state.difficulty}</Card>
+                    </Col>
+                    <Col span={8}>
+                        <Card title="Topics" bordered={true}>Card content</Card>
+                    </Col>
+                    <Col span={8}>
+                        <Card title="Relate Questions" bordered={true}>Card content</Card>
                     </Col>
                 </Row>
             </div>
