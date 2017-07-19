@@ -3,9 +3,9 @@
   "version": "0.0.1",
   "main": "main.js",
   "scripts": {
-    "start": "electron main.js",
+    "dev": "webpack",
     "watch": "watchify app/app.js -t babelify -o public/js/bundle.js --debug --verbose",
-    "electron": "webpack && electron main.js"
+    "electron": "electron main.js"
   },
   "dependencies": {
     "antd": "^2.12.0",
@@ -18,14 +18,13 @@
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
     "watchify": "^3.7.0",
-    "webpack": "^3.2.0"
-  },
-  "devDependencies": {
+    "webpack": "^3.2.0",
     "babel-loader": "^7.1.1",
     "css-loader": "^0.28.4",
     "electron": "^1.4.3",
     "less": "^2.7.2",
     "less-loader": "^4.0.5",
-    "style-loader": "^0.18.2"
+    "style-loader": "^0.18.2",
+    "webpack-dev-server": "^2.5.1"
   }
 }

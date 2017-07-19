@@ -4,8 +4,8 @@
 
 import React from 'react';
 import {Input, Button, Row, Col, Card} from 'antd';
-import Axios from 'axios';
-import {cheerio} from 'cheerio';
+import Axios from 'axios';// module for ajax
+const cheerio = require('cheerio'); // module for html parser
 
 class Search extends React.Component {
     constructor(props) {
@@ -19,7 +19,7 @@ class Search extends React.Component {
         };
         this.handleClick = this.handleClick.bind(this);
         this.handleChange = this.handleChange.bind(this);
-        this.parseHtml = this.handleChange.bind(this);
+        this.parseHtml = this.parseHtml.bind(this);
     }
 
     handleChange(e) {
@@ -29,7 +29,18 @@ class Search extends React.Component {
 
     parseHtml(html) {
         const $ = cheerio.load(html);
-        let diff = $('ul .side-bar-list li:first').text();
+        let diff = $('.side-bar-list').children('.list-item').first().children().last().text();
+        let tags = [];
+        $('div #tags-topics').children('a').each((i, el) => {
+            console.log(el);
+//todo this undefined
+        });
+        console.log(tags);
+        // each(function (i, el) {
+        //     //tags[i] = $(this).attr('href');
+        //
+        // });
+        //console.log(tags);
         this.setState({difficulty: diff});
     }
 
@@ -39,17 +50,11 @@ class Search extends React.Component {
         let question = "";
         for (let word of strArr) {
             question += (word + "-");
-            console.log(question + "\n");
         }
         question = question.slice(0, -1);
         Axios.get(`https://leetcode.com/problems/${question}/#/description`)
-            .then(function (response) {
-                //console.log(response.data);
-                this.parseHtml(response.data);
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
+            .then((response) => this.parseHtml(response.data))
+            .catch((error) => console.log(error));
     }
 
     render() {
@@ -67,6 +72,8 @@ class Search extends React.Component {
                         <Button type="primary" icon="search" onClick={this.handleClick}> Search </Button>
                     </Col>
                 </Row>
+                <div style={{height: '20px'}}>
+                </div>
                 <Row gutter={16}>
                     <Col span={8}>
                         <Card title="Difficulty" bordered={true}>{this.state.difficulty}</Card>
@@ -75,7 +82,7 @@ class Search extends React.Component {
                         <Card title="Topics" bordered={true}>Card content</Card>
                     </Col>
                     <Col span={8}>
-                        <Card title="Relate Questions" bordered={true}>Card content</Card>
+                        <Card title="Relate" bordered={true}>Card content</Card>
                     </Col>
                 </Row>
             </div>
