@@ -3,8 +3,10 @@
  */
 
 import React from 'react';
-import {Input, Button, Row, Col, Card} from 'antd';
+import {Input, Button, Row, Col, Card, Tag} from 'antd';
 import Axios from 'axios';// module for ajax
+import Taglist from "./taglist.component";
+
 const cheerio = require('cheerio'); // module for html parser
 
 class Search extends React.Component {
@@ -32,16 +34,12 @@ class Search extends React.Component {
         let diff = $('.side-bar-list').children('.list-item').first().children().last().text();
         let tags = [];
         $('div #tags-topics').children('a').each((i, el) => {
-            console.log(el);
-//todo this undefined
+            tags[i] = el.children[0].data;
         });
+
         console.log(tags);
-        // each(function (i, el) {
-        //     //tags[i] = $(this).attr('href');
-        //
-        // });
-        //console.log(tags);
-        this.setState({difficulty: diff});
+        this.setState({difficulty: diff, topics: tags});
+
     }
 
     handleClick() {
@@ -79,7 +77,9 @@ class Search extends React.Component {
                         <Card title="Difficulty" bordered={true}>{this.state.difficulty}</Card>
                     </Col>
                     <Col span={8}>
-                        <Card title="Topics" bordered={true}>Card content</Card>
+                        <Card title="Topics" bordered={true}>
+                            <Taglist tags={this.state.topics}/>
+                        </Card>
                     </Col>
                     <Col span={8}>
                         <Card title="Relate" bordered={true}>Card content</Card>

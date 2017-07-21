@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "webpack",
     "watch": "watchify app/app.js -t babelify -o public/js/bundle.js --debug --verbose",
-    "electron": "electron main.js"
+    "start": "webpack&&electron main.js"
   },
   "dependencies": {
     "antd": "^2.12.0",
